@@ -1,4 +1,5 @@
 assert = require 'assert'
+_ = require 'underscore'
 
 MovieRatingsResource = require '../app/movie-ratings'
 
@@ -14,36 +15,41 @@ describe 'MovieRatingsResource', ->
   describe '#getAllMovieRatings()', ->
 
     it 'should return the correct ratings for all movies', ->
-      throw new Error 'Not implemented'
+      assert.deepEqual movieRatings, movieRatings
 
   describe '#getMovieRatings()', ->
 
     it 'should return the correct movie ratings for the requested movie', ->
-      throw new Error 'Not implemented'
+      assert.deepEqual [1,5], movieRatings.getMovieRatings("Bladerunner").sort (a, b) ->
+        a - b
 
     it 'should throw an error if the requested movie does not exist in the repo', ->
-      throw new Error 'Not implemented'
+      assert.throws (-> movieRatings.getMovieRatings("Star Wars")), /Movie does not exist in repository/
 
   describe '#putMovieRatings()', ->
 
     it 'should put a new movie with ratings into the repo and return the ratings', ->
-      throw new Error 'Not implemented'
+      assert.deepEqual [1,2,3], movieRatings.putMovieRatings("Star Wars", [3,2,1]).sort (a, b) ->
+        a - b
 
     it 'should overwrite the ratings of an existing movie in the repo and return the new ratings', ->
-      throw new Error 'Not implemented'
+      assert.deepEqual [1,2,3,4], movieRatings.putMovieRatings("Bladerunner", [3,2,1,4]).sort (a, b) ->
+        a - b
 
   describe '#postMovieRating()', ->
 
     it 'should put a new movie with rating into the repo if it does not already exist and return the rating', ->
-      throw new Error 'Not implemented'
-
+      assert.deepEqual [5], movieRatings.postMovieRating("Back to the Future", 5).sort (a, b) ->
+        a - b
     it 'should add a new rating to an existing movie in the repo and return the ratings', ->
-      throw new Error 'Not implemented'
+      assert.deepEqual [1,4,5], movieRatings.postMovieRating("Bladerunner", 4).sort (a, b) ->
+        a - b
 
   describe '#deleteMovieRatings()', ->
 
     it 'should delete a movie from the ratings repo', ->
-      throw new Error 'Not implemented'
+      assert.deepEqual true, movieRatings.deleteMovieRatings("Bladerunner")
 
     it 'should throw an error when attempting to delete a movie that does not exist', ->
-      throw new Error 'Not implemented'
+      assert.throws (-> movieRatings.deleteMovieRatings("Star Wars")), /Movie does not exist in repository/
+

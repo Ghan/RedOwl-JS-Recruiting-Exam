@@ -53,5 +53,5 @@ app.get '/api/ratemovie/:id', (request, response) ->
   catch error
     response.status(404).json { error: error.toString() }
 
-app.listen 3000
-console.log 'Server listening on port 3000'
+app.listen 3110
+console.log 'Server listening on port 3110'
