@@ -26,16 +26,21 @@ requirejs dependencies, ($, _, Handlebars, ratingsService) ->
                          """
   ratedMovieTemplate = """
                        <div class="rated-movie">
-                         {{movieName}}: {{rating}}
+                         <span class="movie-name">{{movieName}}</span><span class="rating">{{rating}}</span>
                        </div>
                        """
 
   movieRatingsSection = Handlebars.compile movieRatingsTemplate
   ratedMovieSection = Handlebars.compile ratedMovieTemplate
+  $b = $('body')
 
   ratingsService.getAllMovieRatings (ratings) ->
-    $('body').append movieRatingsSection { movieRatings: JSON.stringify ratings }
+    $b.append movieRatingsSection { movieRatings: JSON.stringify ratings }
+    movieBlock = "<div class='existing-movies-block'>Movies"
     for movie of ratings
       do (movie) ->
         ratingsService.getMovieRating movie, (rating) ->
-          $('body').append ratedMovieSection { movieName: movie, rating: rating }
+        	movieBlock += String ratedMovieSection { movieName: movie, rating: rating }
+        	console.log movieBlock
+    console.log movieBlock + " Finished"
+    $b.append movieBlock

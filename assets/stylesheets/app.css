@@ -1,7 +1,20 @@
+body {
+  width: 980px;
+  margin: 0 auto; }
+
 .movie-ratings {
   background-color: black;
   color: lightgrey; }
 
-.rated-movie {
-  background-color: lightblue;
-  color: darkgreen; }
+.existing-movies-block {
+  background-color: #ddd;
+  color: #333;
+  width: 360px;
+  padding: 20px;
+  float: right; }
+  .existing-movies-block .rated-movie .movie-name {
+    display: inline-block;
+    width: 60%; }
+  .existing-movies-block .rated-movie .rating {
+    display: inline-block;
+    width: 40%; }

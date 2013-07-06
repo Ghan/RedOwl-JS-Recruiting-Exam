@@ -1,6 +1,7 @@
-module.exports = (ratings, other_arg) ->
-	if ratings instanceof Array and not other_arg?
-		if ratings.length > 3
+module.exports = (original_ratings, other_arg) ->
+	if original_ratings instanceof Array and not other_arg?
+		if original_ratings.length > 2
+			ratings = original_ratings.slice(0)
 			# sort array
 			ratings.sort (a, b) ->
 				a - b
