@@ -25,7 +25,7 @@ requirejs dependencies, ($, _, Handlebars, ratingsService) ->
                          </div>
                          """
   ratedMovieTemplate = """
-                       <div class="rated-movie">
+                       <div class="rated-movie" id="{{movieName}}">
                          <span class="movie-name">{{movieName}}</span><span class="rating">{{rating}}</span>
                        </div>
                        """
@@ -36,11 +36,38 @@ requirejs dependencies, ($, _, Handlebars, ratingsService) ->
 
   ratingsService.getAllMovieRatings (ratings) ->
     $b.append movieRatingsSection { movieRatings: JSON.stringify ratings }
-    movieBlock = "<div class='existing-movies-block'>Movies"
+    $b.append "<form id='submit-film'>
+      <h3>Add new film ratings here:</h3>
+      <input type='text' id='form-name' name='name' placeholder='Film Name' autofocus required>
+      <input type='text' id='form-rating' name='rating' placeholder='Rating' required>
+      <input type='submit' value='Add'>
+    </form>"
+    $b.append "<div class='existing-movies-block'><h4>Movies</h4></div>"
     for movie of ratings
       do (movie) ->
         ratingsService.getMovieRating movie, (rating) ->
-        	movieBlock += String ratedMovieSection { movieName: movie, rating: rating }
-        	console.log movieBlock
-    console.log movieBlock + " Finished"
-    $b.append movieBlock
+          $('.existing-movies-block').append ratedMovieSection { movieName: movie, rating: rating }
+
+  # submit function
+  $(document).on 'submit', "#submit-film", (e) ->
+    e.preventDefault()
+    name = $("#form-name").val()
+    rating = $("#form-rating").val()
+    # console.log "params " + name + " " + rating
+    # add validations here
+    # submit
+    $.ajax
+      type: 'post'
+      url: "/api/movieratings/" + name
+      data:
+        rating : parseInt(rating)
+      success: (res) ->
+        $("#submit-film").append("<span class='done'>Done!</span>").find(".done").fadeOut(2000)
+        if $("#"+name).length
+          ratingsService.getMovieRating name, (rating) ->
+            console.log rating
+            console.log $("#"+name).find(".rating").html()
+            $("#"+name).find(".rating").html(rating)
+        else
+          $(".existing-movies-block").append ratedMovieSection { movieName: name, rating: rating }
+        

@@ -6,15 +6,20 @@ body {
   background-color: black;
   color: lightgrey; }
 
+#submit-film {
+  margin-top: 20px;
+  float: left; }
+
 .existing-movies-block {
   background-color: #ddd;
   color: #333;
   width: 360px;
-  padding: 20px;
+  padding: 0 10px 20px 10px;
+  margin-top: 20px;
   float: right; }
   .existing-movies-block .rated-movie .movie-name {
     display: inline-block;
-    width: 60%; }
+    width: 80%; }
   .existing-movies-block .rated-movie .rating {
     display: inline-block;
-    width: 40%; }
+    width: 20%; }
