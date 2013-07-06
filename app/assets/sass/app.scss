@@ -19,14 +19,30 @@ body{
 	padding:0 10px 20px 10px;
 	margin-top:20px;
 	float:right;
+	.delete{
+		padding-left:5px;
+		color:red;
+		cursor:pointer;
+		&:hover{
+			color:white;
+		}
+	}
 	.rated-movie {
 		.movie-name{
 			display:inline-block;
-			width:80%;
+			width:70%;
 		}
 		.rating{
 			display:inline-block;
-			width:20%;
+			width:10%;
+		}
+		.edit{
+			font-size:80%;
+			color:#777;
+			cursor:pointer;
+			&:hover{
+				color:black;
+			}
 		}
 	}
 }
