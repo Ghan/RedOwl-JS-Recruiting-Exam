@@ -46,7 +46,7 @@ requirejs dependencies, ($, _, Handlebars, ratingsService) ->
 			<input type='text' id='form-rating' name='rating' placeholder='Rating' required>
 			<input type='submit' value='Add'>
 		</form>"
-		$b.append "<div class='existing-movies-block'><h4>Movies</h4><p>Note: Showing films with more than 2 ratings</p></div>"
+		$b.append "<div class='existing-movies-block'><h4>Movies</h4><p>Note: Films with too few ratings will not appear below.</p></div>"
 		for movie of ratings
 			do (movie) ->
 				ratingsService.getMovieRating movie, (rating) ->
@@ -59,6 +59,7 @@ requirejs dependencies, ($, _, Handlebars, ratingsService) ->
 		rating = $("#form-rating").val()
 		# console.log "params " + name + " " + rating
 		# add validations here
+		name = name.replace("'","\'")
 		# submit
 		$.ajax
 			type: 'post'
@@ -66,13 +67,14 @@ requirejs dependencies, ($, _, Handlebars, ratingsService) ->
 			data:
 				rating : parseInt(rating)
 			success: (res) ->
+				console.log res
 				$("#submit-film").append("<span class='done'>Done!</span>").find(".done").fadeOut(2000)
 				htmlName = name
 				if $("[id='"+name+"']").length
-					ratingsService.getMovieRating name, (rating) ->
-						$("[id='"+name+"']").find(".rating").html(rating.toFixed(2))
+					ratingsService.getMovieRating name, (ratingAve) ->
+						$("[id='"+name+"']").find(".rating").html(ratingAve.toFixed(2))
 				else
-					$(".existing-movies-block").append ratedMovieSection { movieName: name, rating: rating.toFixed(2) }
+					$(".existing-movies-block").append ratedMovieSection { movieName: name, rating: Math.round(rating * 100) / 100 }
 
 	# delete call
 	$(document).on 'click', ".delete", (e) ->
