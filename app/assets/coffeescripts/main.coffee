@@ -35,6 +35,7 @@ requirejs dependencies, ($, _, Handlebars, ratingsService) ->
   $b = $('body')
 
   ratingsService.getAllMovieRatings (ratings) ->
+    console.log JSON.stringify ratings
     $b.append movieRatingsSection { movieRatings: JSON.stringify ratings }
     $b.append "<form id='submit-film'>
       <h3>Add new film ratings here:</h3>
@@ -42,7 +43,7 @@ requirejs dependencies, ($, _, Handlebars, ratingsService) ->
       <input type='text' id='form-rating' name='rating' placeholder='Rating' required>
       <input type='submit' value='Add'>
     </form>"
-    $b.append "<div class='existing-movies-block'><h4>Movies</h4></div>"
+    $b.append "<div class='existing-movies-block'><h4>Movies</h4><p>Note: Showing films with more than 2 ratings</p></div>"
     for movie of ratings
       do (movie) ->
         ratingsService.getMovieRating movie, (rating) ->
@@ -63,11 +64,10 @@ requirejs dependencies, ($, _, Handlebars, ratingsService) ->
         rating : parseInt(rating)
       success: (res) ->
         $("#submit-film").append("<span class='done'>Done!</span>").find(".done").fadeOut(2000)
-        if $("#"+name).length
+        htmlName = name
+        if $("[id='"+name+"']").length
           ratingsService.getMovieRating name, (rating) ->
-            console.log rating
-            console.log $("#"+name).find(".rating").html()
-            $("#"+name).find(".rating").html(rating)
+            $("[id='"+name+"']").find(".rating").html(rating)
         else
           $(".existing-movies-block").append ratedMovieSection { movieName: name, rating: rating }
         
